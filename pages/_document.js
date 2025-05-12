@@ -1,8 +1,3 @@
-// /app/_document.js
-
-
-
-// app/_document.js
 
 import { Html, Head, Main, NextScript } from "next/document";
 

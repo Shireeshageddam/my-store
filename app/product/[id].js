@@ -1,4 +1,6 @@
 'use client';
+
+import Image from 'next/image';
 import { useCartStore } from '@/lib/store/cartStore';
 import { prisma } from "@/lib/prisma";
 import { useState } from "react";
@@ -29,7 +31,10 @@ const ProductDetail = ({ product }) => {
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <img src={product.imageUrl} alt={product.name} className="w-full h-96 object-cover"/>
+          <Image src={product.imageUrl} alt={product.name} 
+          width={800}
+          height={384}
+          className="w-full object-cover"/>
         </div>
         <div>
           <h1 className="text-4xl font-bold">{product.name}</h1>

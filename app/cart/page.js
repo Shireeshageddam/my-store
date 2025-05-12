@@ -1,4 +1,5 @@
 'use client'
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -30,7 +31,10 @@ const Cart = () => {
 
               <div key={item.id} className="flex border border-gray-300 rounded-xl overflow-hidden shadow-sm">
 
-                  <img src={item.imageUrl} alt={item.name} className="w-32 h-32 object-cover mt-4 ml-4"/>
+                  <Image src={item.imageUrl} alt={item.name} 
+                   width={128}  
+                   height={128} 
+                  className="object-cover mt-4 ml-4"/>
 
                   <div className="flex flex-col items-end flex-1 text-right p-4">
                     <div>
