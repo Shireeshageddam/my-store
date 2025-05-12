@@ -1,12 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-
 }
 
 datasource db {
@@ -17,45 +10,44 @@ datasource db {
 model Category {
   id       String    @id @default(cuid())
   name     String
-  products Product[] // One category can have multiple product
+  products Product[]
 }
 
 model Product {
-  id          String   @id @default(cuid())
+  id          String      @id @default(cuid())
   name        String
   description String
   price       Float
   imageUrl    String
   categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id])
-  createdAt   DateTime @default(now()) // Automatically set the creation time
+  createdAt   DateTime    @default(now())
   orderItems  OrderItem[]
+  category    Category    @relation(fields: [categoryId], references: [id])
 }
 
 model User {
-  id       String @id @default(cuid())
-  email    String @unique
+  id       String  @id @default(cuid())
+  email    String  @unique
   password String
-  role     String // 'admin' or 'user'
+  role     String
   orders   Order[]
 }
 
 model Order {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-     // List of products and quantities
-  total     Float
-  createdAt DateTime @default(now())
-  orderItems  OrderItem[]
+  id         String      @id @default(uuid())
+  userId     String
+  total      Float
+  createdAt  DateTime    @default(now())
+  user       User        @relation(fields: [userId], references: [id])
+  orderItems OrderItem[]
 }
 
 model OrderItem {
-  id        String   @id @default(cuid())
-  order     Order    @relation(fields: [orderId], references: [id])
+  id        String  @id @default(cuid())
   orderId   String
-  product   Product  @relation(fields: [productId], references: [id])
   productId String
-  quantity  Int      // Quantity of the product in the order
-  price     Float    // Price of the product in the order
+  quantity  Int
+  price     Float
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
 }
