@@ -1,4 +1,4 @@
-
+export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma"; // Adjust path if needed
 import Image from "next/image";
 import ProductCard from "@/components/ProductCard";
