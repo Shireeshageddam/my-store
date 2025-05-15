@@ -1,5 +1,5 @@
 "use client";
-import { prisma } from '@/lib/prisma';
+
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import CategoryForm from "@/components/CategoryForm";
