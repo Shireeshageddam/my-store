@@ -26,11 +26,11 @@ model Product {
 }
 
 model User {
-  id       String  @id @default(cuid())
-  email    String  @unique
-  password String
-  role     String
-  orders   Order[]
+  id             String  @id @default(cuid())
+  email          String  @unique
+  password       String
+  role           String 
+  orders         Order[]
 }
 
 model Order {

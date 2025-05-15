@@ -6,13 +6,13 @@ const prisma = new PrismaClient();
 
 async function seed() {
   // Hash the password before storing it
-  const password = await bcrypt.hash("admin123", 10);
+  const hashedPassword = await bcrypt.hash("admin123", 10);
 
   // Store the user with the hashed password
   await prisma.user.create({
     data: {
       email: "admin@example.com", // your desired admin email
-      password: password, // hashed password
+      password: hashedPassword, // hashed password
       role: "admin", // assign role as admin
     },
   });
@@ -21,8 +21,10 @@ async function seed() {
 }
 
 seed()
-  .then(() => prisma.$disconnect())
   .catch((e) => {
     console.error(e);
-    prisma.$disconnect();
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
   });

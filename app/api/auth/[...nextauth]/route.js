@@ -3,27 +3,43 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient();
+let prisma;
 
-export const authOptions ={
+if (process.env.NODE_ENV === "production") {
+  prisma = new PrismaClient();
+} else {
+  if (!global.prisma) {
+    global.prisma = new PrismaClient();
+  }
+  prisma = global.prisma;
+}
+
+const authOptions ={
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: {},
-        password: {},
+        email: { label: "Email", type: "email"},
+        password: {label: "Password", type: "password"},
       },
       async authorize(credentials) {
         console.log("Credentials:", credentials);
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
+          select: { id: true, email: true, role: true, password: true },
         });
 
-        if (!user) throw new Error("User not found");
+        if (!user) {
+  console.log("User not found");
+  return null;
+}
 
         const isValid = await bcrypt.compare(credentials.password, user.password);
 
-        if (!isValid) throw new Error("Invalid password");
+        if (!isValid){
+          console.log("Invalid password");
+          return null;
+        }
 
         console.log("login success");
 
@@ -32,7 +48,7 @@ export const authOptions ={
           email: user.email,
           role: user.role,
         };
-      },
+      }
     }),
   ],
   callbacks: {
@@ -58,5 +74,6 @@ export const authOptions ={
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-export const GET = (req, res) => NextAuth(req, res, authOptions);
-export const POST = (req, res) => NextAuth(req, res, authOptions);
+const handler = NextAuth(authOptions);
+export { authOptions };
+export { handler as GET, handler as POST };
