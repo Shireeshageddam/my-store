@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import {prisma} from "@/lib/prisma"
+
 import CategoryForm from "@/components/CategoryForm";
 
 
