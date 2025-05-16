@@ -3,13 +3,11 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+
 import ProductForm from "../ProductForm";
 
 export default function NewProductPage() {
   const [categories, setCategories] = useState([]);
-  const { reset } = useForm(); // initialize reset
-  const [imageUrl, setImageUrl] = useState(""); // manage image state here
   const router = useRouter();
 
   useEffect(() => {
@@ -23,7 +21,6 @@ export default function NewProductPage() {
   }, []);
 
   const handleSubmit = async (formData) => {
-    console.log("FormData:", formData);
     try {
       const res = await fetch("/api/products", {
         method: "POST",
@@ -31,15 +28,12 @@ export default function NewProductPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      });
+    });
 
       if (!res.ok) {
         const error = await res.text();
         console.error("API Error:", error);
       } else {
-        // ✅ Reset the form and image
-        reset();
-        setImageUrl("");
         router.push("/admin/products");
       }
     } catch (err) {
@@ -53,9 +47,6 @@ export default function NewProductPage() {
       <ProductForm
         onSubmit={handleSubmit}
         categories={categories}
-        reset={reset}
-        imageUrl={imageUrl}
-        setImageUrl={setImageUrl}
       />
     </div>
   );
